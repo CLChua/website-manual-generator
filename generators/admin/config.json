@@ -1,0 +1,31 @@
+{
+  "site": {
+    "name": "新疆工程网商城后台管理系统",
+    "version": "JAVA-B2B2C-PRO v5.8.19",
+    "url": "https://admin.lqgongcheng.cn",
+    "loginPath": "/login"
+  },
+  "credentials": {
+    "username": "admin",
+    "password": "admin123"
+  },
+  "selectors": {
+    "usernameInput": "input[placeholder='请输入用户名']",
+    "passwordInput": "input[placeholder='请输入密码']",
+    "loginButton": "button:has-text('登 录')",
+    "orgSelector": ".shop-item.admin-item"
+  },
+  "modules": [],
+  "output": {
+    "screenshotDir": "./screenshots",
+    "docName": "使用手册.docx",
+    "pptName": "系统介绍.pptx"
+  },
+  "options": {
+    "headless": true,
+    "viewport": { "width": 1920, "height": 1080 },
+    "waitAfterClick": 3000,
+    "waitAfterLogin": 5000,
+    "waitAfterOrgSelect": 8000
+  }
+}

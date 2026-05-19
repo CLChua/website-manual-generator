@@ -1,0 +1,83 @@
+{
+  "site": {
+    "name": "网站名称",
+    "version": "v1.0",
+    "url": "https://example.com",
+    "homePath": "/",
+    "type": "corporate",
+    "_comment_type": "type: 'industry'(行业网站，有个人中心) 或 'corporate'(企业官网，无个人中心)"
+  },
+  "login": {
+    "enabled": false,
+    "_comment_enabled": "是否需要登录后访问会员页面。企业官网通常 false，行业网站通常 true",
+    "loginPath": "/login",
+    "username": "",
+    "password": "",
+    "selectors": {
+      "usernameInput": "input[name='username'], input[type='text'], input[placeholder*='用户名'], input[placeholder*='账号'], input[placeholder*='手机']",
+      "passwordInput": "input[type='password'], input[placeholder*='密码']",
+      "loginButton": "button[type='submit'], button:has-text('登录'), button:has-text('登 录'), .login-btn"
+    },
+    "memberPages": [
+      {
+        "name": "个人中心",
+        "path": "/user/center"
+      },
+      {
+        "name": "我的订单",
+        "path": "/user/order"
+      },
+      {
+        "name": "账户设置",
+        "path": "/user/profile"
+      }
+    ]
+  },
+  "options": {
+    "navSelectors": [
+      "nav a",
+      "header nav a",
+      "header .nav a",
+      ".navbar a",
+      ".header-nav a",
+      ".main-nav a",
+      ".menu a",
+      "#nav a",
+      "#menu a",
+      "[class*='nav-item'] a",
+      "[class*='menu-item'] a",
+      "header a"
+    ],
+    "scrollBeforeScreenshot": true,
+    "scrollSteps": 5,
+    "scrollDelay": 800,
+    "headless": true,
+    "viewport": { "width": 1920, "height": 1080 },
+    "waitAfterLoad": 4000,
+    "maxPages": 30,
+    "sameDomainOnly": true,
+    "excludePatterns": [
+      "/admin",
+      "/api",
+      "/assets",
+      "/static",
+      "/uploads",
+      "/css",
+      "/js",
+      ".pdf",
+      ".zip",
+      ".jpg",
+      ".png",
+      "javascript:",
+      "mailto:",
+      "tel:"
+    ]
+  },
+  "audience": "甲方客户",
+  "_comment_audience": "文档面向的读者群体，影响文档语言风格。'甲方客户' 强调价值、体验、视觉效果",
+  "output": {
+    "screenshotDir": "./screenshots",
+    "docName": "网站使用手册.docx",
+    "pptName": "网站介绍.pptx"
+  }
+}

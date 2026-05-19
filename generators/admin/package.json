@@ -1,0 +1,23 @@
+{
+  "name": "ai-admin-manual-generator",
+  "version": "1.0.0",
+  "description": "AI网站后台使用手册生成器 - 自动截图并生成Word手册和PPT",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "capture": "npx tsx capture.ts",
+    "generate": "node generate-doc.cjs && node generate-ppt.cjs",
+    "build": "npx tsx capture.ts && node generate-doc.cjs && node generate-ppt.cjs",
+    "doc": "node generate-doc.cjs",
+    "ppt": "node generate-ppt.cjs"
+  },
+  "dependencies": {
+    "docx": "^9.0.0",
+    "pptxgenjs": "^3.12.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0"
+  }
+}
