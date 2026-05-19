@@ -5,7 +5,6 @@
 > **AI 驱动的网站文档生成器** —— 自动截图任意网站，基于 AI 视觉理解撰写功能描述，一键生成 Word 使用手册与 PowerPoint 介绍文档。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Skill: Claude Code](https://img.shields.io/badge/Skill-Claude_Code-purple.svg)](https://claude.com/claude-code)
 [![Playwright](https://img.shields.io/badge/Playwright-1.60+-2EAD33.svg)](https://playwright.dev/)
 
 ## 这是什么？
@@ -14,7 +13,7 @@
 
 大多数"自动文档"工具只是将截图塞进模板，无法识别截图中的实际功能，描述只能靠模块名猜测 —— 常常出错（例如模块名叫"经营"，实际功能是**企业知识产权管理**）。
 
-本项目利用 **Claude 多模态视觉能力**查看每张截图，理解真实功能，写出准确描述。整个工作流被打包成 Claude Code Skill，用户只需一句话即可触发全部流程。
+本项目利用 **AI 多模态视觉能力**（任何支持视觉理解的 LLM）查看每张截图，理解真实功能，写出准确描述。整个工作流被完整打包，用户只需一句话即可触发全部流程。
 
 ## 功能特性
 
@@ -31,7 +30,7 @@
 ### 环境要求
 
 - Node.js 18+
-- 已安装 [Claude Code](https://claude.com/claude-code)
+- 一个支持视觉理解的 AI 助手（如 Claude、GPT-4V、Gemini）—— 用于截图描述步骤
 - Playwright（通过 npm 安装）
 
 ### 安装步骤
@@ -48,24 +47,21 @@ cd generators/frontend && npm install && cd ../..
 # 3. 安装 Playwright 浏览器
 npx playwright install chromium
 
-# 4. 将 Skill 链接到 Claude Code（Windows）
-mklink /D "%USERPROFILE%\.claude\skills\website-manual-generator" "%CD%\skill"
+# 4. （可选）如使用 AI Agent/Skill 系统，将 skill 目录
+#    链接到你的 Agent Skill 文件夹。Skill 定义见 skill/SKILL.md。
 
-# 4. 将 Skill 链接到 Claude Code（macOS/Linux）
-ln -s "$(pwd)/skill" "$HOME/.claude/skills/website-manual-generator"
-
-# 5. 编辑 skill/SKILL.md，将 `<INSTALL_PATH>` 替换为仓库绝对路径
+# 5. 编辑 generators/{admin,frontend}/config.json 配置目标网站
 ```
 
 ### 生成手册
 
-打开 Claude Code，输入：
+使用你的 AI 助手（或提供的 Skill），运行：
 
 ```
 生成 https://example.com 的用户手册
 ```
 
-Claude 会：
+AI 助手将：
 1. 询问站点类型、登录凭据和项目名称
 2. 运行截图脚本（Playwright）
 3. **阅读每张截图** 理解真实功能
@@ -109,7 +105,7 @@ website-manual-generator/
 本项目通过 **AI 视觉** 打破这个循环：
 
 ```
-网址 → 截图 → Claude 阅读每张 PNG（多模态） → 真实描述 → 输出
+网址 → 截图 → AI 阅读每张 PNG（多模态） → 真实描述 → 输出
              ↑
              看到实际内容：表格列、按钮、筛选器、统计数据
 ```
@@ -118,7 +114,7 @@ website-manual-generator/
 
 > "经营模块用于业务运营和数据管理。"  ❌（错误）
 
-使用 AI 视觉（本项目），Claude 看到实际截图：
+使用 AI 视觉（本项目），AI 看到实际截图：
 
 > "企业知识产权风险模块。管理中国域名、商标保护状态以及各公司的 SSL/安全证书。"  ✅（准确）
 
@@ -166,7 +162,7 @@ website-manual-generator/
 
 - 更多网站框架适配器（Vue Admin、Ant Design Pro 变体等）
 - 更多语言（英文/日文描述模板）
-- LLM API 集成（不通过 Claude Code，直接使用 Claude API）
+- LLM API 集成（不通过 AI 助手 UI，直接调用 Anthropic/OpenAI/Google API）
 - Web 界面
 
 ## 开源协议
@@ -175,20 +171,17 @@ website-manual-generator/
 
 ## 常见问题解答
 
-**Q: 为什么需要 Claude Code？不能独立使用吗？**
-A: AI 视觉步骤是核心。Claude（通过 Claude Code）阅读每张截图并写出准确描述。没有它，描述只能靠模块名猜测。
+**Q: 为什么需要支持视觉的 AI 助手？不能独立使用吗？**
+A: AI 视觉步骤是核心。一个支持视觉理解的 AI 阅读每张截图并写出准确描述。没有它，描述只能靠模块名猜测。
 
-**Q: 可以直接使用 Claude API 吗？**
-A: 目前还不行 —— 这将是一个很好的贡献。目前 Skill 假设使用 Claude Code 作为编排器。
+**Q: 可以直接使用 LLM API 吗？**
+A: 目前还没有开箱即用的方案 —— 这将是一个很好的贡献。目前工作流假设使用支持视觉的 AI 助手作为编排器。你可以 Fork 本项目，将"AI 视觉"步骤替换为直接调用 Claude、GPT-4V 或 Gemini 的 API。
 
 **Q: 我的密码安全吗？**
 A: 凭据写入项目文件夹内的本地 `config.json`。永远不会提交到 git（受 `.gitignore` 保护）。仅用于通过 Playwright 在本地登录。
 
 **Q: 支持带验证码 / 双因素认证的网站吗？**
 A: 目前不支持。验证码会中断自动登录。暂时禁用要文档化的后台的验证码，或将 `headless: false` 设为手动解决一次。
-
-**Q: 可以直接使用 Anthropic API（不用 Claude Code）吗？**
-A: 可以 Fork 本项目，将"AI 视觉"步骤替换为 Anthropic API 调用（使用 `claude-opus-4` 等）。描述 schema 见 `skill/SKILL.md`。
 
 ---
 

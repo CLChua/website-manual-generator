@@ -87,11 +87,11 @@ npx tsx "..\ai-{admin|frontend}-manual-generator\index.ts" ".\config.json"
 
 ### 步骤 3：AI 视觉理解 → 生成 descriptions.json（**本 skill 的核心**）
 
-**这一步必须由 Claude 完成，不能跳过、不能用脚本占位。**
+**这一步必须由具备视觉理解能力的 AI 完成，不能跳过、不能用脚本占位。**
 
 ```
 对 screenshots/ 目录下的每张截图：
-1. 使用 Read 工具查看截图（Claude 是多模态模型，可以理解图片内容）
+1. 使用 Read 工具查看截图（AI 助手是多模态模型，可以理解图片内容）
 2. 识别页面的真实功能：
    - 看面包屑/页面标题，确认是哪个模块
    - 看页面元素：表格列、按钮、筛选条件、统计指标
@@ -210,18 +210,9 @@ node "..\ai-{admin|frontend}-manual-generator\generate-ppt.cjs" ".\config.json"
 
 ## 重要原则
 
-1. **AI 看图是核心**：descriptions.json 必须由 Claude 看真实截图后撰写，不要用脚本占位、不要让用户填写
+1. **AI 看图是核心**：descriptions.json 必须由具备视觉能力的 AI 看真实截图后撰写，不要用脚本占位、不要让用户填写
 2. **同步等待**：每一步用 spawnSync/同步 Bash 调用，确保前一步完成后再进行下一步
 3. **逐张精读**：每张截图都要单独 Read 一次，写细节（字段名、按钮、状态等）
 4. **配置自适应**：根据用户提供的 URL 自动识别类型（含 admin/manage/backend 关键字 → 后台）
 5. **报错不静默**：脚本失败立即给用户报告，不掩盖
 
-## 已实现的项目（参考）
-
-| 项目 | 类型 | 位置 |
-|------|------|------|
-| 新疆工程网商城后台管理系统 | 后台 | `admin-manual\新疆工程网商城后台管理系统\` |
-| 亿飞金后台管理系统 | 后台 | `admin-manual\亿飞金后台管理系统\` |
-| 宜弘AI网站前台 | 前台 | `admin-manual\宜弘AI网站前台使用手册\` |
-
-参考这些已完成的项目结构和 descriptions.json 写法。

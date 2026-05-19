@@ -5,7 +5,6 @@ English | [简体中文](README.zh-CN.md)
 > **AI-powered website documentation generator** — auto-screenshot any website, AI-vision-driven description writing, and one-click generation of Word manuals & PowerPoint presentations.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Skill: Claude Code](https://img.shields.io/badge/Skill-Claude_Code-purple.svg)](https://claude.com/claude-code)
 [![Playwright](https://img.shields.io/badge/Playwright-1.60+-2EAD33.svg)](https://playwright.dev/)
 
 ## 🎯 What is this?
@@ -14,7 +13,7 @@ Give it a URL. Get a Word manual and PowerPoint introduction. **Fully automated.
 
 Most "auto-doc" tools fail because they can only put screenshots into a template. The actual functions in the screenshots remain unidentified, so the descriptions are guessed from module names — and often wrong (e.g., a module named "经营/Business" might actually be **企业知识产权管理 / Enterprise IP Management**).
 
-This project solves that by leveraging **Claude's multimodal vision** to look at each screenshot, understand the real function, and write accurate descriptions. The skill packages the entire workflow so a single user prompt triggers everything.
+This project solves that by leveraging **AI multimodal vision** (any vision-capable LLM) to look at each screenshot, understand the real function, and write accurate descriptions. The entire workflow is packaged so a single prompt triggers everything.
 
 ## ✨ Features
 
@@ -31,7 +30,7 @@ This project solves that by leveraging **Claude's multimodal vision** to look at
 ### Prerequisites
 
 - Node.js 18+
-- [Claude Code](https://claude.com/claude-code) installed
+- An AI assistant with vision capabilities (e.g., Claude, GPT-4V, Gemini) — for the screenshot description step
 - Playwright (installed via npm)
 
 ### Installation
@@ -48,24 +47,21 @@ cd generators/frontend && npm install && cd ../..
 # 3. Install Playwright browser
 npx playwright install chromium
 
-# 4. Link skill to Claude Code (Windows)
-mklink /D "%USERPROFILE%\.claude\skills\website-manual-generator" "%CD%\skill"
+# 4. (Optional) If using an AI agent/skill system, link the skill directory
+#    to your agent's skill folder. See skill/SKILL.md for the skill definition.
 
-# 4. Link skill to Claude Code (macOS/Linux)
-ln -s "$(pwd)/skill" "$HOME/.claude/skills/website-manual-generator"
-
-# 5. Edit skill/SKILL.md and replace `<INSTALL_PATH>` with this repo's absolute path
+# 5. Edit config files in generators/{admin,frontend}/config.json for your target site
 ```
 
 ### Generate a manual
 
-Open Claude Code and say:
+Using your AI assistant (or the provided skill), run:
 
 ```
 Generate user manual for https://example.com
 ```
 
-Claude will:
+The AI assistant will:
 1. Ask the site type, login credentials, and project name
 2. Run the screenshot script (Playwright)
 3. **Read each screenshot** to understand real functionality
@@ -109,7 +105,7 @@ URL → Screenshot → Template with module names → Output Word/PPT
 This project breaks the loop with **AI vision**:
 
 ```
-URL → Screenshot → Claude reads each PNG (multimodal) → Real descriptions → Output
+URL → Screenshot → AI reads each PNG (multimodal) → Real descriptions → Output
                    ↑
                    Sees actual content: table columns, buttons, filters, stats
 ```
@@ -118,7 +114,7 @@ URL → Screenshot → Claude reads each PNG (multimodal) → Real descriptions 
 
 > "Business module is used for business operations and data."  ❌ (wrong)
 
-With AI vision (this project), Claude sees the actual screenshot:
+With AI vision (this project), the AI sees the actual screenshot:
 
 > "Enterprise Intellectual Property Risk module. Manages Chinese domain names, trademark protection status, and SSL/security certificates per company."  ✅ (accurate)
 
@@ -166,7 +162,7 @@ PRs welcome! Areas that need help:
 
 - More website framework adapters (Vue Admin, Ant Design Pro variants, etc.)
 - More languages (English/Japanese description templates)
-- LLM API integration (use Claude API directly without Claude Code)
+- LLM API integration (use Anthropic/OpenAI/Google API directly without an AI assistant UI)
 - Web-based UI
 
 ## 📜 License
@@ -175,20 +171,17 @@ PRs welcome! Areas that need help:
 
 ## 🙋 FAQ
 
-**Q: Why does it need Claude Code? Can't I use it standalone?**
-A: The AI vision step is the secret sauce. Claude (via Claude Code) reads each screenshot and writes accurate descriptions. Without it, descriptions would be guessed from module names.
+**Q: Why does it need an AI assistant with vision? Can't I use it standalone?**
+A: The AI vision step is the secret sauce. A vision-capable AI reads each screenshot and writes accurate descriptions. Without it, descriptions would be guessed from module names.
 
-**Q: Can I use Claude API directly?**
-A: Not yet — this would be a great contribution. Currently the skill assumes Claude Code as the orchestrator.
+**Q: Can I use an LLM API directly?**
+A: Not yet out of the box — this would be a great contribution. Currently the workflow assumes an AI assistant (with vision) as the orchestrator. You can fork this and replace the "AI vision" step with a direct API call to Claude, GPT-4V, or Gemini.
 
 **Q: Is my password safe?**
 A: Credentials are written to a local `config.json` inside your project folder. Never committed to git (covered by `.gitignore`). Only used to log in via Playwright on your machine.
 
 **Q: Does it work on websites with CAPTCHA / 2FA?**
 A: Not currently. CAPTCHA breaks automated login. Disable CAPTCHA temporarily for the admin you're documenting, or set `headless: false` to manually solve it once.
-
-**Q: What about the Anthropic API (no Claude Code)?**
-A: You can fork this and replace the "AI vision" step with an Anthropic API call (using `claude-opus-4` or similar). See `skill/SKILL.md` for the description schema.
 
 ---
 
