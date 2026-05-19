@@ -1,5 +1,7 @@
 # Website Manual Generator
 
+English | [简体中文](README.zh-CN.md)
+
 > **AI-powered website documentation generator** — auto-screenshot any website, AI-vision-driven description writing, and one-click generation of Word manuals & PowerPoint presentations.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
